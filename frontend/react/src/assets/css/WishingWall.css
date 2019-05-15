@@ -7,6 +7,13 @@ body {
     background-color: #c30230;
 }
 
+#header {
+    margin: 10px auto;
+    width: 960px;
+    background-color: aliceblue;
+    box-shadow: 0px 1px 3px goldenrod;
+}
+
 #content {
     margin: 0 auto;
     width: 960px;

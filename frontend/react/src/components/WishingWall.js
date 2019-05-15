@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter as Router } from "react-router-dom";
 import iconBpic from '../assets/images/bpic_1.gif';
 import '../assets/css/WishingWall.css';
 
