@@ -1,4 +1,6 @@
 import React from 'react';
+import { wishApi } from '../api';
+import { Redirect } from 'react-router-dom';
 
 const WishingForm = (props) => {
 
@@ -7,7 +9,19 @@ const WishingForm = (props) => {
 
     const handleWish = (e) => {
         // todo post data
-        console.log(author, content)
+        if (!author) {
+            alert('姓名必填')
+        }
+        if (!content) {
+            alert('内容必填')
+        }
+
+        wishApi.store({
+            author,
+            content,
+        }).then(res => {
+            props.history.push('/');
+        })
     };
 
     const handleAuthor = (e) => {

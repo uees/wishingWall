@@ -1,30 +1,46 @@
 import React from 'react';
+import axios from 'axios'
+import { wishApi } from '../api';
+import { formatTime } from '../utils';
 import '../assets/css/WishingWall.css';
 
 class WishingList extends React.Component {
     constructor(props) {
         super(props);
+        this.cancel = null;
         this.state = {
             date: new Date(),
-            messages: Array.from({ length: 30 }, (v, k) => {
-                return {
-                    id: k,
-                    created_at: "2018-09-09",
-                    content: "哈哈哈哈哈哈 大苏打实打实大苏打",
-                    author: "马大哈",
-                    top: parseInt(Math.random() * 400) + "px",
-                    left: parseInt(Math.random() * 700) + "px",
-                }
-            }),
+            messages: [],
         };
     }
 
     componentDidMount() {
-        // todo ajax
+        const page = this.props.match.page;
+
+        wishApi.index({
+            cancelToken: new axios.CancelToken(cancel => {
+                this.cancel = cancel
+            }),
+            params: {
+                page
+            }
+        }).then(response => {
+            const { data } = response.data
+            const messages = data.map(message => {
+                message.created_at = formatTime(message.created_at)
+                message.position = {
+                    top: parseInt(message.position.top * 400) + "px",
+                    left: parseInt(message.position.left * 700) + "px",
+                }
+                return message
+            });
+
+            this.setState({ messages })
+        });
     }
 
     componentWillUnmount() {
-
+        this.cancel()
     }
 
     render() {

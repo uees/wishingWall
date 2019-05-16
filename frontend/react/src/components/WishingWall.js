@@ -1,6 +1,9 @@
 import React from 'react';
-import iconBpic from '../assets/images/bpic_1.gif';
+import axios from 'axios'
+import { wishApi } from '../api';
+import { formatTime } from '../utils';
 import '../assets/css/WishingWall.css';
+import iconBpic from '../assets/images/bpic_1.gif';
 
 const STATE = {
     zIndex: 0,
@@ -9,27 +12,49 @@ const STATE = {
 class WishingWall extends React.Component {
     constructor(props) {
         super(props);
+        this.cancel = null;
         this.state = {
             date: new Date(),
-            messages: Array.from({ length: 30 }, (v, k) => {
+            messages: [],
+        };
+        /**
+            Array.from({ length: 30 }, (v, k) => {
                 return {
                     id: k,
                     created_at: "2018-09-09",
                     content: "哈哈哈哈哈哈 大苏打实打实大苏打",
                     author: "马大哈",
-                    top: parseInt(Math.random() * 400) + "px",
-                    left: parseInt(Math.random() * 700) + "px",
+                    position: {
+                        top: parseInt(Math.random() * 400) + "px",
+                        left: parseInt(Math.random() * 700) + "px",
+                    }
                 }
-            }),
-        };
+            })
+         */
     }
 
     componentDidMount() {
-        // todo ajax
+        wishApi.index({
+            cancelToken: new axios.CancelToken(cancel => {
+                this.cancel = cancel
+            })
+        }).then(response => {
+            const { data } = response.data
+            const messages = data.map(message => {
+                message.created_at = formatTime(message.created_at)
+                message.position = {
+                    top: parseInt(message.position.top * 400) + "px",
+                    left: parseInt(message.position.left * 700) + "px",
+                }
+                return message
+            });
+
+            this.setState({ messages })
+        });
     }
 
     componentWillUnmount() {
-
+        this.cancel()
     }
 
     render() {
@@ -79,8 +104,8 @@ class WishingCard extends React.Component {
 
         const message = this.props.message;
         const style = {
-            top: message.top,
-            left: message.left,
+            top: message.position.top,
+            left: message.position.left,
             zIndex: this.state.zIndex,
         };
 
