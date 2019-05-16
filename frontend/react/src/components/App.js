@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import WishingWall from './WishingWall';
 import WishingList from './WishingList';
-import WishingForm from './Wishing';
+import WishingForm from './WishingForm';
 
 const App = ({ match }) => (
     <Router>

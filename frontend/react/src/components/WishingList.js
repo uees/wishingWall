@@ -31,7 +31,7 @@ class WishingList extends React.Component {
         const messages = this.state.messages;
 
         const listItems = messages.map(message => (
-            <Wishing key={message.id.toString()} message={message} />
+            <WishingItem key={message.id.toString()} message={message} />
         ));
 
         return (
@@ -41,7 +41,7 @@ class WishingList extends React.Component {
 }
 
 
-function Wishing(props) {
+function WishingItem(props) {
     const message = props.message;
 
     return (

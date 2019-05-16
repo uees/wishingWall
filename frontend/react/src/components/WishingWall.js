@@ -38,7 +38,7 @@ class WishingWall extends React.Component {
             zIndex: this.state.zIndex,
         };
         const listItems = messages.map(message => (
-            <Wishing key={message.id.toString()} message={message}
+            <WishingCard key={message.id.toString()} message={message}
                 style={style} />
         ));
 
@@ -48,7 +48,7 @@ class WishingWall extends React.Component {
     }
 }
 
-class Wishing extends React.Component {
+class WishingCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
